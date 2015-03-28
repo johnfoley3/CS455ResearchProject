@@ -6,6 +6,8 @@ import java.util.ArrayList;
 public class Word {
 
 	private String word;
+	private String partialDecryption;
+
 
 	/**
 	 * Constructor
