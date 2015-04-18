@@ -23,14 +23,6 @@ public class Word {
 		this.word = word;
 	}
 
-	/**
-	 * Returns whether or not this is a matched word
-	 * @return boolean Is a found word
-	 */
-	public boolean isWord() {
-
-		return true;
-	}
 
 	/**
 	 * Return a list of digraphs and trigraphs found in the word
