@@ -8,7 +8,6 @@ public class Word {
 	private String word;
 	private String partialDecryption;
 
-
 	/**
 	 * Constructor
 	 * @param word String to read in
@@ -27,6 +26,10 @@ public class Word {
 		return true;
 	}
 
+	/**
+	 * Return a list of digraphs and trigraphs found in the word
+	 * @return ArrayList of String patterns
+	 */
 	public ArrayList<String> getPatterns() {
 
 		ArrayList<String> output = new ArrayList<String>();
