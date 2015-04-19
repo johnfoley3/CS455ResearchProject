@@ -11,8 +11,11 @@ import java.util.ArrayList;
 
 public class Decryptor
 {
+	
 	private ArrayList <Word> wordList= new ArrayList <Word> ();
-	private int [] oneLetterFrequency = new int [26];
+	private ArrayList <LetterFrequencyStruct> oneLetterFrequency = new ArrayList <LetterFrequencyStruct> ();
+	private Key theKey = new Key ();
+	
 	/**
 	 * Finds how frequently letters are used in text.
 	 * @param normalWords the word list to be analyzed
@@ -25,15 +28,18 @@ public class Decryptor
 			this.wordList.add(wordList.get(i).clone());
 		}
 		findOneLetterFrequency();
+		generateFrequencyBasedKey ();
 	}
+	
 	/**
 	 * Finds the one letter frequency of the wordList the Decryptor is currently using.
 	 */
 	public void findOneLetterFrequency ()
 	{
+		int [] oneLetterTallySheet = new int [26];
 		int totalLetters = 0;
 		
-		Utility.intitializeIntArrayToZero(oneLetterFrequency);
+		Utility.intitializeIntArrayToZero(oneLetterTallySheet);
 		
 		for (int i = 0; i<wordList.size();i++)
 		{
@@ -42,15 +48,27 @@ public class Decryptor
 			{
 				if (Character.isLetter(word.charAt(letterPosition)))
 				{
-					oneLetterFrequency[word.charAt(letterPosition)-'a']++;
+					oneLetterTallySheet[word.charAt(letterPosition)-'a']++;
 					totalLetters++;
 				}
 			}
 		}
-		// test code will eventually be deleted
-		for (int i = 0; i < oneLetterFrequency.length;i++)
+		for (int i = 0; i < oneLetterTallySheet.length;i++)
 		{
-			System.out.println((char)('a'+ i) +": " + (double) oneLetterFrequency [i]/totalLetters);
+			oneLetterFrequency.add (new LetterFrequencyStruct ( Character.toString((char) ('a' +i)),(double) oneLetterTallySheet [i]/totalLetters));
 		}
+	}
+	
+	public void generateFrequencyBasedKey ()
+	{
+		LetterFrequencyStruct.sortByFrequency(oneLetterFrequency);
+		for (int i = 0; i < oneLetterFrequency.size();i++)
+		{
+			theKey.charBind(LetterFrequencyStruct.TRUE_ONE_LETTER_FREQUENCY.get(i).getLetterSequence().charAt(0), oneLetterFrequency.get(i).getLetterSequence().charAt(0));
+		}
+	}
+	public String getKeyGuess ()
+	{
+		return theKey.getKey();
 	}
 }
