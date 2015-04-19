@@ -38,4 +38,11 @@ public class Word {
 
 		return output;
 	}
+
+	@Override
+	public String toString()
+	{
+		return  word;
+	}
+	
 }
