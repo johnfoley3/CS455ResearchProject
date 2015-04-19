@@ -26,8 +26,9 @@ public class Driver
 		Key theKey = new Key ();
 	
 
-		//readTextFile("Source.txt", normalWords, apostropheList);
-		encryptText (theKey,"Source.txt","EncryptedSrc.txt");
+		readTextFile("EncryptedSrc.txt", normalWords, apostropheList);
+		//encryptText (theKey,"Source.txt","EncryptedSrc.txt");
+		Decryptor decrypt = new Decryptor(normalWords);
 	}
 
 	/**
