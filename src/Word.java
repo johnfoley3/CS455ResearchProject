@@ -16,6 +16,12 @@ public class Word {
 
 		this.word = word;
 	}
+	
+	private Word(String word, String partialDecryption) {
+
+		this.word = word;
+		this.partialDecryption = partialDecryption;
+	}
 
 	/**
 	 * Returns whether or not this is a matched word
@@ -25,7 +31,11 @@ public class Word {
 
 		return true;
 	}
-
+	
+	public Word clone ()
+	{
+		return new Word (word,partialDecryption);
+	}
 	/**
 	 * Return a list of digraphs and trigraphs found in the word
 	 * @return ArrayList of String patterns
