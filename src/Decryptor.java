@@ -11,8 +11,10 @@ import java.util.ArrayList;
 
 public class Decryptor
 {
+	
 	private ArrayList <Word> wordList= new ArrayList <Word> ();
-	private int [] oneLetterFrequency = new int [26];
+	private LetterFrequencyStruct [] oneLetterFrequency = new LetterFrequencyStruct [26];
+	
 	/**
 	 * Finds how frequently letters are used in text.
 	 * @param normalWords the word list to be analyzed
@@ -26,14 +28,16 @@ public class Decryptor
 		}
 		findOneLetterFrequency();
 	}
+	
 	/**
 	 * Finds the one letter frequency of the wordList the Decryptor is currently using.
 	 */
 	public void findOneLetterFrequency ()
 	{
+		int [] oneLetterTallySheet = new int [26];
 		int totalLetters = 0;
 		
-		Utility.intitializeIntArrayToZero(oneLetterFrequency);
+		Utility.intitializeIntArrayToZero(oneLetterTallySheet);
 		
 		for (int i = 0; i<wordList.size();i++)
 		{
@@ -42,15 +46,20 @@ public class Decryptor
 			{
 				if (Character.isLetter(word.charAt(letterPosition)))
 				{
-					oneLetterFrequency[word.charAt(letterPosition)-'a']++;
+					oneLetterTallySheet[word.charAt(letterPosition)-'a']++;
 					totalLetters++;
 				}
 			}
 		}
 		// test code will eventually be deleted
-		for (int i = 0; i < oneLetterFrequency.length;i++)
+		for (int i = 0; i < oneLetterTallySheet.length;i++)
 		{
-			System.out.println((char)('a'+ i) +": " + (double) oneLetterFrequency [i]/totalLetters);
+			oneLetterFrequency [i] = new LetterFrequencyStruct ( Character.toString((char) ('a' +i)),(double) oneLetterTallySheet [i]/totalLetters);
 		}
+	}
+	
+	public static void generateFrequencyBasedKey ()
+	{
+		
 	}
 }
