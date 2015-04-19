@@ -75,7 +75,8 @@ public class Driver
 				e.printStackTrace();
 				System.exit(-1);
 			}
-	};
+	}
+
 	/**
 	 * Reads in the text file and outputs an encrypted version using the key to writeFile
 	 * @param theKey The key that is being used to encrypt the text.

@@ -23,6 +23,13 @@ public class Word {
 		this.word = word;
 	}
 
+	/**
+	 * Constructor
+	 * @param word String to read in
+	 * @param partialDecryption Partial Decryption to remember
+	 */
+	public Word (String word, String partialDecryption) {
+
 		this.word = word;
 		this.partialDecryption = partialDecryption;
 	}
@@ -32,6 +39,7 @@ public class Word {
 	 * @return boolean Is a found word
 	 */
 	public boolean isWord() {
+
 
 		return true;
 	}
