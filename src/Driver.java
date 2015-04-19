@@ -28,13 +28,16 @@ public class Driver
 
 		ArrayList<Word> normalWords = new ArrayList<Word>();
 		ArrayList<String> apostropheList = new ArrayList<String>();
-		Key theKey = new Key ();
-
 		// TODO: Read in dictionary file to arraylist of words
-
+		Key theKey = new Key ();
+		System.out.println(theKey.getKey());
+		encryptText (theKey,"Source.txt","EncryptedSrc.txt");
 		readTextFile("EncryptedSrc.txt", normalWords, apostropheList);
-		//encryptText (theKey,"Source.txt","EncryptedSrc.txt");
 		Decryptor decrypt = new Decryptor(normalWords);
+		theKey =  new Key (decrypt.getKeyGuess());
+		decryptText (theKey,"EncryptedSrc.txt","Solution.txt");
+		System.out.println(theKey.getKey());
+
 	}
 
 	/**
@@ -119,6 +122,49 @@ public class Driver
 		    BufferedWriter writer;
 			writer = new BufferedWriter(new FileWriter(new File(writeFile)));
 		    writer.write (encrypted);
+
+		    //Close writer
+		    writer.close();
+		    
+		} 
+		
+		catch (IOException e)
+		{
+			System.out.println("Could not write to file.");
+			e.printStackTrace();
+			System.exit(-1);
+		}
+	}
+	public static void decryptText (Key theKey, final String srcFile, final String writeFile)
+	{
+		String decrypted = "";
+		try {
+
+			Scanner reader = new Scanner(new File(srcFile));
+
+			String line;
+
+			while (reader.hasNextLine()) {
+
+				line = reader.nextLine().toLowerCase();
+				decrypted += theKey.decrypt(line) + "\n";
+			}
+
+
+		} 
+		catch (FileNotFoundException e) 
+		{
+
+			System.out.println("Could not open file.");
+			e.printStackTrace();
+			System.exit(-1);
+		}
+
+		try
+		{
+		    BufferedWriter writer;
+			writer = new BufferedWriter(new FileWriter(new File(writeFile)));
+		    writer.write (decrypted);
 
 		    //Close writer
 		    writer.close();

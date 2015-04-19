@@ -13,7 +13,8 @@ public class Decryptor
 {
 	
 	private ArrayList <Word> wordList= new ArrayList <Word> ();
-	private LetterFrequencyStruct [] oneLetterFrequency = new LetterFrequencyStruct [26];
+	private ArrayList <LetterFrequencyStruct> oneLetterFrequency = new ArrayList <LetterFrequencyStruct> ();
+	private Key theKey = new Key ();
 	
 	/**
 	 * Finds how frequently letters are used in text.
@@ -27,6 +28,7 @@ public class Decryptor
 			this.wordList.add(wordList.get(i).clone());
 		}
 		findOneLetterFrequency();
+		generateFrequencyBasedKey ();
 	}
 	
 	/**
@@ -51,15 +53,22 @@ public class Decryptor
 				}
 			}
 		}
-		// test code will eventually be deleted
 		for (int i = 0; i < oneLetterTallySheet.length;i++)
 		{
-			oneLetterFrequency [i] = new LetterFrequencyStruct ( Character.toString((char) ('a' +i)),(double) oneLetterTallySheet [i]/totalLetters);
+			oneLetterFrequency.add (new LetterFrequencyStruct ( Character.toString((char) ('a' +i)),(double) oneLetterTallySheet [i]/totalLetters));
 		}
 	}
 	
-	public static void generateFrequencyBasedKey ()
+	public void generateFrequencyBasedKey ()
 	{
-		
+		LetterFrequencyStruct.sortByFrequency(oneLetterFrequency);
+		for (int i = 0; i < oneLetterFrequency.size();i++)
+		{
+			theKey.charBind(LetterFrequencyStruct.TRUE_ONE_LETTER_FREQUENCY.get(i).getLetterSequence().charAt(0), oneLetterFrequency.get(i).getLetterSequence().charAt(0));
+		}
+	}
+	public String getKeyGuess ()
+	{
+		return theKey.getKey();
 	}
 }
