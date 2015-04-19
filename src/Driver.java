@@ -1,5 +1,8 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -7,6 +10,7 @@ import java.util.Scanner;
  * Contains the main class to run.
  * @class Driver
  */
+
 public class Driver
 {
 
@@ -19,8 +23,11 @@ public class Driver
 
 		ArrayList<Word> normalWords = new ArrayList<Word>();
 		ArrayList<String> apostropheList = new ArrayList<String>();
+		Key theKey = new Key ();
+	
 
-		readTextFile(args[0], normalWords, apostropheList);
+		//readTextFile("Source.txt", normalWords, apostropheList);
+		encryptText (theKey,"Source.txt","EncryptedSrc.txt");
 	}
 
 	/**
@@ -68,4 +75,55 @@ public class Driver
 				System.exit(-1);
 			}
 	};
+	/**
+	 * Reads in the text file and outputs an encrypted version using the key to writeFile
+	 * @param theKey The key that is being used to encrypt the text.
+	 * @param srcFile The file text is being taken from
+	 * @param writeFile The file the encrypted text is written to.
+	 */
+	public static void encryptText (Key theKey, final String srcFile, final String writeFile)
+	{
+		String encrypted = "";
+		try {
+
+			Scanner reader = new Scanner(new File(srcFile));
+
+			String line;
+
+			while (reader.hasNextLine()) {
+
+				line = reader.nextLine().toLowerCase();
+				encrypted += theKey.encrypt(line) + "\n";
+			}
+
+
+		} 
+		catch (FileNotFoundException e) 
+		{
+
+			System.out.println("Could not open file.");
+			e.printStackTrace();
+			System.exit(-1);
+		}
+
+		try
+		{
+		    BufferedWriter writer;
+			writer = new BufferedWriter(new FileWriter(new File(writeFile)));
+		    writer.write (encrypted);
+
+		    //Close writer
+		    writer.close();
+		    
+		} 
+		
+		catch (IOException e)
+		{
+			System.out.println("Could not write to file.");
+			e.printStackTrace();
+			System.exit(-1);
+		}
+
+		
+	}
 }
