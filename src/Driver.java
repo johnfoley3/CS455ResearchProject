@@ -1,3 +1,5 @@
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,6 +16,9 @@ import java.util.Scanner;
 public class Driver
 {
 
+	// Typos on first letter are much more rare.  Max score 0.3
+	public static final double MAX_SCORE_FOR_NO_FIRST_LETTER_MATCH = 0.3;
+
 	/**
 	 * Constructor
 	 * @param args Command line arguments, one should be the file name
@@ -24,7 +29,8 @@ public class Driver
 		ArrayList<Word> normalWords = new ArrayList<Word>();
 		ArrayList<String> apostropheList = new ArrayList<String>();
 		Key theKey = new Key ();
-	
+
+		// TODO: Read in dictionary file to arraylist of words
 
 		readTextFile("EncryptedSrc.txt", normalWords, apostropheList);
 		//encryptText (theKey,"Source.txt","EncryptedSrc.txt");
@@ -125,7 +131,35 @@ public class Driver
 			e.printStackTrace();
 			System.exit(-1);
 		}
+	}
 
-		
+	// TODO: make this work for Word searchWord instead of Strings
+	/**
+	 * Scores a word against a candidate word
+	 * @param searchWord Base word
+	 * @param candidateWord Word to score against
+	 * @return score of the fuzzy matched word. Will be <= 1.0
+	 */
+	public double scoreWord(String searchWord, String candidateWord) {
+
+		if (searchWord.equals(candidateWord)) {
+
+			return 1.0;
+		}
+
+		int editDistance = StringUtils.getLevenshteinDistance(
+				searchWord, candidateWord);
+
+		// Normalize for length:
+		double score =
+				(candidateWord.length() - editDistance) / candidateWord.length();
+
+		// Artificially reduce the score if the first letters don't match
+		if (searchWord.charAt(0) != candidateWord.charAt(0)) {
+			score = Math.min(score, MAX_SCORE_FOR_NO_FIRST_LETTER_MATCH);
+		}
+
+		// We may want to generate another score
+		return Math.max(0.0, Math.min(score, 1.0));
 	}
 }
